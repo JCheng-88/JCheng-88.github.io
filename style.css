@@ -1,0 +1,111 @@
+body{
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+}
+
+h1{
+    margin: 0px 0px 10px 5px;
+    padding: 5px;
+    font-family: "Fredoka One", sans-serif;
+    color: white; /* Set the text color to white or any color you like */
+    text-shadow: 
+      -2px -2px 0 black,  /* Top left shadow */
+       2px -2px 0 black,  /* Top right shadow */
+      -2px  2px 0 black,  /* Bottom left shadow */
+       2px  2px 0 black;  /* Bottom right shadow */
+  
+}
+
+body > header{
+    background-color: orange;
+    color: aliceblue;
+    display: flex;
+    height: 10vh;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#nav-ul {
+    display: flex;
+}
+
+#nav-ul > li {
+    padding: 5px;
+    margin: 10px;
+}
+
+body > header > nav > ul {
+    list-style: none;
+    text-decoration: none;
+}
+
+.topnav {
+    color: white;
+    text-decoration: none;
+    padding: 8px;
+    border: 1px solid white;
+    border-radius: 7%;
+}
+
+#main-content {
+    display: flex;
+    justify-content: space-around;
+}
+
+img {
+    border-radius: 50%;
+}
+
+#main-content > div  {
+    width: 80%;
+}
+
+body > main article {
+    width: 70%; 
+    margin: auto;
+    line-height: 25px;
+}
+    /* font-size: large; */
+
+form {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+body > footer{
+    background-color: orange;
+    color: aliceblue;
+    display: flex;
+    /* height: 10vh; */
+    align-items: center;
+    /* justify-content: space-around; */
+
+}
+
+#footer-ul{
+    display: flex;
+    list-style: none;
+}
+
+#footer-ul >div > li {
+    margin-left: 12px;
+    color: white;
+    text-decoration: none;
+}
+
+
+/* I can use either one below!! */
+
+/* #footer-ul >div > li > a {
+    text-decoration: none;
+    color: white;
+} */
+
+.bottomnav {
+    text-decoration: none;
+    color: white;
+}

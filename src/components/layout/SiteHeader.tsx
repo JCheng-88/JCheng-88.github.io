@@ -1,7 +1,7 @@
 // src/components/layout/SiteHeader.tsx
 "use client";
 import Link from 'next/link';
-import { Leaf, Languages, UserCircle, ChevronDown, Info } from 'lucide-react';
+import { Leaf, Languages, UserCircle, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,10 +13,23 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
 export function SiteHeader() {
   const { language, setLanguage, translate, availableLanguages, appName } = useLanguage();
   const pathname = usePathname();
+
+  const baseLinkClasses = "transition-colors hover:text-foreground/80";
+  const activeClass = "text-foreground font-medium";
+  const inactiveClass = "text-foreground/60";
+
+  const [homeLinkEffectiveClass, setHomeLinkEffectiveClass] = useState(inactiveClass);
+  const [aboutLinkEffectiveClass, setAboutLinkEffectiveClass] = useState(inactiveClass);
+
+  useEffect(() => {
+    setHomeLinkEffectiveClass(pathname === "/" ? activeClass : inactiveClass);
+    setAboutLinkEffectiveClass(pathname === "/about" ? activeClass : inactiveClass);
+  }, [pathname, activeClass, inactiveClass]); // Add dependencies
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -29,19 +42,13 @@ export function SiteHeader() {
         <nav className="flex items-center gap-4 text-sm lg:gap-6">
           <Link
             href="/"
-            className={cn(
-              "transition-colors hover:text-foreground/80",
-              pathname === "/" ? "text-foreground font-medium" : "text-foreground/60"
-            )}
+            className={cn(baseLinkClasses, homeLinkEffectiveClass)}
           >
             {translate('navHome')}
           </Link>
           <Link
             href="/about"
-            className={cn(
-              "transition-colors hover:text-foreground/80",
-              pathname === "/about" ? "text-foreground font-medium" : "text-foreground/60"
-            )}
+            className={cn(baseLinkClasses, aboutLinkEffectiveClass)}
           >
             {translate('navAbout')}
           </Link>

@@ -46,6 +46,17 @@ export const translations: Record<Language, Record<string, string>> = {
     vegan: "Vegan",
     lowSodium: "Low Sodium",
     highProtein: "High Protein",
+    // Scan History
+    scanHistoryTitle: "Recently Viewed",
+    noScanHistory: "You haven't viewed any products yet.",
+    clearHistory: "Clear History",
+    historyCleared: "Scan history cleared.",
+    viewProduct: "View",
+    // App Promotion
+    appPromotionTitle: "Get the Full NutriCode Experience!",
+    appPromotionMessage: "Download our mobile app for offline access, personalized alerts, and an even smoother experience on the go.",
+    downloadOnAppStore: "Download on the App Store",
+    getItOnGooglePlay: "Get it on Google Play",
     // Common
     g: "g", 
     kcal: "kcal",
@@ -89,6 +100,17 @@ export const translations: Record<Language, Record<string, string>> = {
     vegan: "Vegano",
     lowSodium: "Bajo en Sodio",
     highProtein: "Alto en Proteínas",
+    // Scan History
+    scanHistoryTitle: "Vistos Recientemente",
+    noScanHistory: "Aún no has visto ningún producto.",
+    clearHistory: "Borrar Historial",
+    historyCleared: "Historial de escaneo borrado.",
+    viewProduct: "Ver",
+    // App Promotion
+    appPromotionTitle: "¡Obtén la Experiencia Completa de NutriCode!",
+    appPromotionMessage: "Descarga nuestra aplicación móvil para acceso sin conexión, alertas personalizadas y una experiencia aún más fluida sobre la marcha.",
+    downloadOnAppStore: "Descargar en App Store",
+    getItOnGooglePlay: "Obtener en Google Play",
     // Common
     g: "g",
     kcal: "kcal",
@@ -132,6 +154,17 @@ export const translations: Record<Language, Record<string, string>> = {
     vegan: "Végétalien",
     lowSodium: "Faible en Sodium",
     highProtein: "Riche en Protéines",
+    // Scan History
+    scanHistoryTitle: "Consultés Récemment",
+    noScanHistory: "Vous n'avez encore consulté aucun produit.",
+    clearHistory: "Effacer l'Historique",
+    historyCleared: "Historique de scan effacé.",
+    viewProduct: "Voir",
+    // App Promotion
+    appPromotionTitle: "Vivez l'Expérience NutriCode Complète !",
+    appPromotionMessage: "Téléchargez notre application mobile pour un accès hors ligne, des alertes personnalisées et une expérience encore plus fluide lors de vos déplacements.",
+    downloadOnAppStore: "Télécharger sur l'App Store",
+    getItOnGooglePlay: "Obtenir sur Google Play",
     // Common
     g: "g",
     kcal: "kcal",

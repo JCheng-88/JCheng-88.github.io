@@ -36,6 +36,8 @@ export interface UserProfile {
   };
   accessibility: {
     textToSpeech: boolean;
-    highContrastMode: boolean;
+    enlargedText: boolean; // Renamed from highContrastMode, now specifically for text enlargement
+    textSizeScale: number; // Scale factor for text size, e.g., 1.0, 1.2, 1.5
+    highContrastMode: boolean; // New, separate toggle for high contrast
   };
 }

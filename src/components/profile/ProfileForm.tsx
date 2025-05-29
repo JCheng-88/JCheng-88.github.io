@@ -6,6 +6,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
 import {
   Form,
   FormControl,
@@ -24,19 +25,21 @@ import { defaultUserProfile } from "@/data/mockData";
 
 const profileFormSchema = z.object({
   dietaryRestrictions: z.object({
-    glutenFree: z.boolean().default(false),
-    dairyFree: z.boolean().default(false),
-    vegetarian: z.boolean().default(false),
-    vegan: z.boolean().default(false),
+    glutenFree: z.boolean().default(defaultUserProfile.dietaryRestrictions.glutenFree),
+    dairyFree: z.boolean().default(defaultUserProfile.dietaryRestrictions.dairyFree),
+    vegetarian: z.boolean().default(defaultUserProfile.dietaryRestrictions.vegetarian),
+    vegan: z.boolean().default(defaultUserProfile.dietaryRestrictions.vegan),
   }),
-  allergies: z.string().transform(val => val.split(',').map(s => s.trim()).filter(Boolean)).default(""),
+  allergies: z.string().transform(val => val.split(',').map(s => s.trim()).filter(Boolean)).default(defaultUserProfile.allergies.join(', ')),
   preferences: z.object({
-    lowSodium: z.boolean().default(false),
-    highProtein: z.boolean().default(false),
+    lowSodium: z.boolean().default(defaultUserProfile.preferences.lowSodium),
+    highProtein: z.boolean().default(defaultUserProfile.preferences.highProtein),
   }),
   accessibility: z.object({
-    textToSpeech: z.boolean().default(false),
-    highContrastMode: z.boolean().default(false),
+    textToSpeech: z.boolean().default(defaultUserProfile.accessibility.textToSpeech),
+    enlargedText: z.boolean().default(defaultUserProfile.accessibility.enlargedText),
+    textSizeScale: z.number().min(0.8).max(2).step(0.1).default(defaultUserProfile.accessibility.textSizeScale),
+    highContrastMode: z.boolean().default(defaultUserProfile.accessibility.highContrastMode),
   }),
 });
 
@@ -49,57 +52,65 @@ export function ProfileForm() {
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: {
-      ...defaultUserProfile,
-      allergies: defaultUserProfile.allergies.join(', '), // Convert array to string for form
-      accessibility: { // Ensure accessibility defaults are spread
-        ...defaultUserProfile.accessibility,
-      },
-    },
+    // Default values are set by Zod schema's .default() where specified,
+    // otherwise, they will be undefined initially until localStorage is loaded or defaults below are applied.
+    // We will use form.reset in useEffect to populate from localStorage or full defaultUserProfile.
   });
+  
+  const enlargedTextEnabled = form.watch("accessibility.enlargedText");
+  const currentTextSizeScale = form.watch("accessibility.textSizeScale") || defaultUserProfile.accessibility.textSizeScale;
+
 
   useEffect(() => {
     try {
       const storedProfile = localStorage.getItem('nutricode-user-profile');
       if (storedProfile) {
-        const parsedProfile: UserProfile = JSON.parse(storedProfile);
-        form.reset({
-            ...parsedProfile,
-            allergies: parsedProfile.allergies.join(', '),
-            accessibility: { // Ensure accessibility settings are loaded or defaulted
-              textToSpeech: parsedProfile.accessibility?.textToSpeech || false,
-              highContrastMode: parsedProfile.accessibility?.highContrastMode || false,
-            },
-        });
-      } else {
-        // If no stored profile, ensure default accessibility values are set from defaultUserProfile
-        form.reset({
-          ...defaultUserProfile,
-          allergies: defaultUserProfile.allergies.join(', '),
+        const parsedProfile: Partial<UserProfile> = JSON.parse(storedProfile);
+        // Construct the full profile ensuring all fields, especially nested ones, are present
+        const newProfileData: ProfileFormValues = {
+          dietaryRestrictions: {
+            ...defaultUserProfile.dietaryRestrictions,
+            ...(parsedProfile.dietaryRestrictions || {}),
+          },
+          allergies: parsedProfile.allergies ? parsedProfile.allergies.join(', ') : defaultUserProfile.allergies.join(', '),
+          preferences: {
+            ...defaultUserProfile.preferences,
+            ...(parsedProfile.preferences || {}),
+          },
           accessibility: {
             ...defaultUserProfile.accessibility,
+            ...(parsedProfile.accessibility || {}),
           },
+        };
+        form.reset(newProfileData);
+      } else {
+         // If no stored profile, reset with full default values
+        form.reset({
+          dietaryRestrictions: { ...defaultUserProfile.dietaryRestrictions },
+          allergies: defaultUserProfile.allergies.join(', '),
+          preferences: { ...defaultUserProfile.preferences },
+          accessibility: { ...defaultUserProfile.accessibility },
         });
       }
     } catch (error) {
       console.error("Failed to load profile from localStorage", error);
        // Fallback to default values if parsing fails or any error occurs
        form.reset({
-        ...defaultUserProfile,
+        dietaryRestrictions: { ...defaultUserProfile.dietaryRestrictions },
         allergies: defaultUserProfile.allergies.join(', '),
-        accessibility: {
-          ...defaultUserProfile.accessibility,
-        },
+        preferences: { ...defaultUserProfile.preferences },
+        accessibility: { ...defaultUserProfile.accessibility },
       });
     }
     setIsLoading(false);
-  }, [form]);
+  }, [form]); // form is a dependency of useEffect
 
   function onSubmit(data: ProfileFormValues) {
     try {
       const profileToSave: UserProfile = {
         ...data,
-        allergies: data.allergies // data.allergies is already string[] here
+        // allergies string is already transformed to string[] by Zod schema
+        // and data object here already reflects that transformation.
       };
       localStorage.setItem('nutricode-user-profile', JSON.stringify(profileToSave));
       toast({
@@ -221,6 +232,58 @@ export function ProfileForm() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="accessibility.enlargedText"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 shadow">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">
+                      {translate('enableEnlargedText')}
+                    </FormLabel>
+                    <FormDescription>
+                      {translate('enlargedTextDescription')}
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {enlargedTextEnabled && (
+              <FormField
+                control={form.control}
+                name="accessibility.textSizeScale"
+                render={({ field }) => (
+                  <FormItem className="rounded-lg border p-4 shadow space-y-3">
+                    <div className="flex items-center justify-between">
+                       <FormLabel>{translate('textSizeScaleLabel')}</FormLabel>
+                       <span className="text-sm text-muted-foreground">{(currentTextSizeScale * 100).toFixed(0)}%</span>
+                    </div>
+                    <FormControl>
+                      <Slider
+                        value={[field.value]} // Slider expects an array
+                        onValueChange={(value) => field.onChange(value[0])} // Update form with the first element
+                        min={0.8}
+                        max={2}
+                        step={0.1}
+                        aria-label={translate('textSizeScaleLabel')}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                        {translate('textSizeScaleDescriptionHelp', { value: (currentTextSizeScale * 100).toFixed(0) })}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
             <FormField
               control={form.control}
               name="accessibility.highContrastMode"

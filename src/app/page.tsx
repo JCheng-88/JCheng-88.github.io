@@ -28,18 +28,30 @@ export default function HomePage() {
   useEffect(() => {
     // Load scan history
     const storedHistoryIdsJSON = localStorage.getItem(HISTORY_STORAGE_KEY);
+    let historicProducts: Product[] = [];
+
     if (storedHistoryIdsJSON) {
       try {
         const storedHistoryIds = JSON.parse(storedHistoryIdsJSON) as string[];
-        const historicProducts = storedHistoryIds
+        historicProducts = storedHistoryIds
           .map(id => mockProducts.find(p => p.id === id))
           .filter(p => p !== undefined) as Product[];
-        setScanHistory(historicProducts);
       } catch (e) {
         console.error("Error parsing scan history from localStorage", e);
-        localStorage.removeItem(HISTORY_STORAGE_KEY);
+        localStorage.removeItem(HISTORY_STORAGE_KEY); // Clear corrupted data
       }
     }
+
+    if (historicProducts.length === 0 && mockProducts.length > 0) {
+      // Pre-populate with the first few mock products if history is empty
+      const defaultHistoryCount = Math.min(MAX_HISTORY_ITEMS, 3, mockProducts.length);
+      const defaultProductIds = mockProducts.slice(0, defaultHistoryCount).map(p => p.id);
+      historicProducts = defaultProductIds
+        .map(id => mockProducts.find(p => p.id === id))
+        .filter(p => p !== undefined) as Product[];
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(defaultProductIds));
+    }
+    setScanHistory(historicProducts);
 
     // Load user profile
     const storedProfile = localStorage.getItem(USER_PROFILE_STORAGE_KEY);
@@ -63,6 +75,8 @@ export default function HomePage() {
         const productAllergenLower = productAllergen.toLowerCase();
         if (userProfile.allergies.some(userAllergen => {
           const userAllergenLower = userAllergen.toLowerCase();
+          // Check if product allergen is listed in user's allergies or if user's allergy is a substring of product allergen
+          // e.g., user has "nuts", product has "tree nuts" OR user has "almond", product has "almonds"
           return productAllergenLower.includes(userAllergenLower) || userAllergenLower.includes(productAllergenLower);
         })) {
           warnings.push(productAllergen);
@@ -95,10 +109,10 @@ export default function HomePage() {
         
         localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(historyIds));
         
-        const historicProducts = historyIds
+        const newHistoricProducts = historyIds
           .map(id => mockProducts.find(p => p.id === id))
           .filter(p => p !== undefined) as Product[];
-        setScanHistory(historicProducts);
+        setScanHistory(newHistoricProducts);
       }
     }
   };

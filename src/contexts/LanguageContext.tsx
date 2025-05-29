@@ -15,20 +15,36 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguageState] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>('en'); // Default to 'en'
 
   useEffect(() => {
-    // Attempt to load saved language from localStorage
+    let initialLanguage: Language = 'en';
+    let languageSet = false;
+
+    // 1. Attempt to load saved language from localStorage
     const savedLanguage = localStorage.getItem('nutricode-lang') as Language | null;
     if (savedLanguage && availableLanguages.find(l => l.code === savedLanguage)) {
-      setLanguageState(savedLanguage);
+      initialLanguage = savedLanguage;
+      languageSet = true;
     }
-    // Could also try to detect browser language here as a fallback
+
+    // 2. If no language in localStorage, try to detect browser language
+    if (!languageSet && typeof navigator !== 'undefined' && navigator.language) {
+      const browserLangParts = navigator.language.split('-')[0] as Language;
+      if (availableLanguages.find(l => l.code === browserLangParts)) {
+        initialLanguage = browserLangParts;
+        languageSet = true;
+      }
+    }
+    
+    setLanguageState(initialLanguage);
+    // We don't save the detected browser language to localStorage immediately,
+    // only when the user explicitly sets it.
   }, []);
 
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('nutricode-lang', lang); // Save language to localStorage
+    localStorage.setItem('nutricode-lang', lang); // Save explicitly chosen language
   }, []);
 
   const translate = useCallback((key: string, replacements?: Record<string, string | number>) => {

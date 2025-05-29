@@ -1,7 +1,7 @@
 // src/components/layout/SiteHeader.tsx
 "use client";
 import Link from 'next/link';
-import { Leaf, Languages, UserCircle, ChevronDown } from 'lucide-react';
+import { Leaf, Languages, UserCircle, ChevronDown, Info } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import {
@@ -44,6 +44,15 @@ export function SiteHeader() {
             )}
           >
             {translate('navProfile')}
+          </Link>
+          <Link
+            href="/about"
+            className={cn(
+              "transition-colors hover:text-foreground/80",
+              pathname === "/about" ? "text-foreground font-medium" : "text-foreground/60"
+            )}
+          >
+            {translate('navAbout')}
           </Link>
         </nav>
 

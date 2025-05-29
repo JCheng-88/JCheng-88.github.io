@@ -13,11 +13,12 @@ export const translations: Record<Language, Record<string, string>> = {
     // Header
     navHome: "Scan",
     navProfile: "Profile",
+    navAbout: "About Us", // New
     language: "Language",
     // Home Page (Scan)
-    scanPromptTitle: "Scan a Product", // Changed from scanPrompt
-    scanPromptMessage: "Product details will appear here once a QR code is scanned. You can also view items from your history below.", // New
-    noProductSelectedPrompt: "Scan a product or select an item from your history to view its details.", // New
+    scanPromptTitle: "Scan a Product", 
+    scanPromptMessage: "Product details will appear here once a QR code is scanned. You can also view items from your history below.", 
+    noProductSelectedPrompt: "Scan a product or select an item from your history to view its details.", 
     productNotFound: "Product not found.",
     nutritionalInformation: "Nutritional Information",
     ingredients: "Ingredients",
@@ -51,13 +52,38 @@ export const translations: Record<Language, Record<string, string>> = {
     noScanHistory: "You haven't viewed any products yet.",
     clearHistory: "Clear History",
     historyCleared: "Scan history cleared.",
-    historyClearedMessage: "Your recently viewed items have been cleared.", // New or updated for consistency
+    historyClearedMessage: "Your recently viewed items have been cleared.", 
     viewProduct: "View",
     // App Promotion
     appPromotionTitle: "Get the Full NutriCode Experience!",
     appPromotionMessage: "Download our mobile app for offline access, personalized alerts, and an even smoother experience on the go.",
     downloadOnAppStore: "Download on the App Store",
     getItOnGooglePlay: "Get it on Google Play",
+    // About Page
+    aboutTitle: "Our Mission: Accessible Food Information for All",
+    aboutSubtitle: "Revolutionizing how we understand what we eat.",
+    problemTitle: "The Challenge with Current Labels",
+    problemDescription: "Nutrition and ingredient labels are often crammed, hard to read, limited in language, and inaccessible for many, including the visually impaired. For brands, updating these labels is costly and wasteful.",
+    solutionTitle: "Our Solution: Smart, Dynamic, Personalized",
+    solutionDescription: "NutriCode replaces or supplements printed labels with a QR code linking to a dynamic, multilingual, personalized info page. Consumers instantly see calories, macros, allergen warnings, dietary compatibility, sustainability data, and product updates – all tailored to their needs.",
+    impactTitle: "Making a Real Difference",
+    impactIntro: "This isn't just a convenience feature. We’re solving real access problems for hundreds of millions of people:",
+    statMigrantsValue: "280M+",
+    statMigrantsLabel: "Migrants & Expats Worldwide",
+    statTouristsValue: "1.5B",
+    statTouristsLabel: "Tourists Annually",
+    statAllergiesValue: "Millions",
+    statAllergiesLabel: "With Food Allergies",
+    statVisionImpairmentValue: "2B+",
+    statVisionImpairmentLabel: "With Vision Impairment",
+    inclusivityTitle: "Leaving No One Behind",
+    inclusivityDescription: "We're committed to accessibility. That’s why we’re designing backup systems like SMS and phone line access to ensure everyone can benefit, even without a smartphone.",
+    benefitsTitle: "Why NutriCode?",
+    benefitFoodCompanies: "For food companies: Cut label change costs, reduce waste, and open a direct digital channel to customers.",
+    benefitHealthApps: "For health apps & wearables: A rich, clean data pipe for seamless integration.",
+    benefitConsumers: "For consumers: Food information that is accessible, personal, and globally relevant – for the first time.",
+    visionTitle: "The Future of Food Transparency",
+    visionDescription: "This isn’t just a tech upgrade — it’s the next standard for food transparency.",
     // Common
     g: "g", 
     kcal: "kcal",
@@ -68,11 +94,12 @@ export const translations: Record<Language, Record<string, string>> = {
     // Header
     navHome: "Escanear",
     navProfile: "Perfil",
+    navAbout: "Nosotros", // New
     language: "Idioma",
     // Home Page (Scan)
-    scanPromptTitle: "Escanear un Producto", // Changed
-    scanPromptMessage: "Los detalles del producto aparecerán aquí una vez que se escanee un código QR. También puedes ver artículos de tu historial a continuación.", // New
-    noProductSelectedPrompt: "Escanee un producto o seleccione un artículo de su historial para ver sus detalles.", // New
+    scanPromptTitle: "Escanear un Producto", 
+    scanPromptMessage: "Los detalles del producto aparecerán aquí una vez que se escanee un código QR. También puedes ver artículos de tu historial a continuación.", 
+    noProductSelectedPrompt: "Escanee un producto o seleccione un artículo de su historial para ver sus detalles.", 
     productNotFound: "Producto no encontrado.",
     nutritionalInformation: "Información Nutricional",
     ingredients: "Ingredientes",
@@ -106,13 +133,38 @@ export const translations: Record<Language, Record<string, string>> = {
     noScanHistory: "Aún no has visto ningún producto.",
     clearHistory: "Borrar Historial",
     historyCleared: "Historial de escaneo borrado.",
-    historyClearedMessage: "Tus artículos vistos recientemente han sido borrados.", // New
+    historyClearedMessage: "Tus artículos vistos recientemente han sido borrados.", 
     viewProduct: "Ver",
     // App Promotion
     appPromotionTitle: "¡Obtén la Experiencia Completa de NutriCode!",
     appPromotionMessage: "Descarga nuestra aplicación móvil para acceso sin conexión, alertas personalizadas y una experiencia aún más fluida sobre la marcha.",
     downloadOnAppStore: "Descargar en App Store",
     getItOnGooglePlay: "Obtener en Google Play",
+    // About Page
+    aboutTitle: "Nuestra Misión: Información Alimentaria Accesible para Todos",
+    aboutSubtitle: "Revolucionando cómo entendemos lo que comemos.",
+    problemTitle: "El Desafío de las Etiquetas Actuales",
+    problemDescription: "Las etiquetas de nutrición e ingredientes suelen estar apretadas, ser difíciles de leer, limitadas en idioma e inaccesibles para muchos, incluidas las personas con discapacidad visual. Para las marcas, actualizar estas etiquetas es costoso y un desperdicio.",
+    solutionTitle: "Nuestra Solución: Inteligente, Dinámica, Personalizada",
+    solutionDescription: "NutriCode reemplaza o complementa las etiquetas impresas con un código QR que enlaza a una página de información dinámica, multilingüe y personalizada. Los consumidores ven al instante calorías, macros, advertencias de alérgenos, compatibilidad dietética, datos de sostenibilidad y actualizaciones de productos, todo adaptado a sus necesidades.",
+    impactTitle: "Marcando una Diferencia Real",
+    impactIntro: "Esto no es solo una función de conveniencia. Estamos resolviendo problemas reales de acceso para cientos de millones de personas:",
+    statMigrantsValue: "280M+",
+    statMigrantsLabel: "Migrantes y Expatriados en el Mundo",
+    statTouristsValue: "1.5MM", // MM for "mil millones"
+    statTouristsLabel: "Turistas Anualmente",
+    statAllergiesValue: "Millones",
+    statAllergiesLabel: "Con Alergias Alimentarias",
+    statVisionImpairmentValue: "2MM+",
+    statVisionImpairmentLabel: "Con Discapacidad Visual",
+    inclusivityTitle: "No Dejar a Nadie Atrás",
+    inclusivityDescription: "Estamos comprometidos con la accesibilidad. Por eso estamos diseñando sistemas de respaldo como SMS y acceso por línea telefónica para asegurar que todos puedan beneficiarse, incluso sin un teléfono inteligente.",
+    benefitsTitle: "¿Por Qué NutriCode?",
+    benefitFoodCompanies: "Para empresas alimentarias: Reducir costos de cambio de etiquetas, disminuir el desperdicio y abrir un canal digital directo con los clientes.",
+    benefitHealthApps: "Para aplicaciones de salud y wearables: Un flujo de datos rico y limpio para una integración perfecta.",
+    benefitConsumers: "Para consumidores: Información alimentaria accesible, personal y globalmente relevante, por primera vez.",
+    visionTitle: "El Futuro de la Transparencia Alimentaria",
+    visionDescription: "Esto no es solo una actualización tecnológica, es el próximo estándar para la transparencia alimentaria.",
     // Common
     g: "g",
     kcal: "kcal",
@@ -123,11 +175,12 @@ export const translations: Record<Language, Record<string, string>> = {
     // Header
     navHome: "Scanner",
     navProfile: "Profil",
+    navAbout: "À Propos", // New
     language: "Langue",
     // Home Page (Scan)
-    scanPromptTitle: "Scanner un Produit", // Changed
-    scanPromptMessage: "Les détails du produit apparaîtront ici une fois qu'un code QR est scanné. Vous pouvez également consulter les articles de votre historique ci-dessous.", // New
-    noProductSelectedPrompt: "Scannez un produit ou sélectionnez un article de votre historique pour afficher ses détails.", // New
+    scanPromptTitle: "Scanner un Produit", 
+    scanPromptMessage: "Les détails du produit apparaîtront ici une fois qu'un code QR est scanné. Vous pouvez également consulter les articles de votre historique ci-dessous.", 
+    noProductSelectedPrompt: "Scannez un produit ou sélectionnez un article de votre historique pour afficher ses détails.", 
     productNotFound: "Produit non trouvé.",
     nutritionalInformation: "Informations Nutritionnelles",
     ingredients: "Ingrédients",
@@ -161,13 +214,38 @@ export const translations: Record<Language, Record<string, string>> = {
     noScanHistory: "Vous n'avez encore consulté aucun produit.",
     clearHistory: "Effacer l'Historique",
     historyCleared: "Historique de scan effacé.",
-    historyClearedMessage: "Vos articles récemment consultés ont été effacés.", // New
+    historyClearedMessage: "Vos articles récemment consultés ont été effacés.", 
     viewProduct: "Voir",
     // App Promotion
     appPromotionTitle: "Vivez l'Expérience NutriCode Complète !",
     appPromotionMessage: "Téléchargez notre application mobile pour un accès hors ligne, des alertes personnalisées et une expérience encore plus fluide lors de vos déplacements.",
     downloadOnAppStore: "Télécharger sur l'App Store",
     getItOnGooglePlay: "Obtenir sur Google Play",
+    // About Page
+    aboutTitle: "Notre Mission : Une Information Alimentaire Accessible à Tous",
+    aboutSubtitle: "Révolutionner notre façon de comprendre ce que nous mangeons.",
+    problemTitle: "Le Défi des Étiquettes Actuelles",
+    problemDescription: "Les étiquettes nutritionnelles et d'ingrédients sont souvent surchargées, difficiles à lire, limitées en langues et inaccessibles pour beaucoup, y compris les malvoyants. Pour les marques, mettre à jour ces étiquettes est coûteux et source de gaspillage.",
+    solutionTitle: "Notre Solution : Intelligente, Dynamique, Personnalisée",
+    solutionDescription: "NutriCode remplace ou complète les étiquettes imprimées par un code QR menant à une page d'information dynamique, multilingue et personnalisée. Les consommateurs voient instantanément calories, macronutriments, avertissements d'allergènes, compatibilité alimentaire, données de durabilité et mises à jour de produits – le tout adapté à leurs besoins.",
+    impactTitle: "Faire une Vraie Différence",
+    impactIntro: "Ce n'est pas juste une fonctionnalité pratique. Nous résolvons de vrais problèmes d'accès pour des centaines de millions de personnes :",
+    statMigrantsValue: "280M+",
+    statMigrantsLabel: "Migrants et Expatriés dans le Monde",
+    statTouristsValue: "1.5Md", // Md for Milliards
+    statTouristsLabel: "Touristes Chaque Année",
+    statAllergiesValue: "Millions",
+    statAllergiesLabel: "Souffrant d'Allergies Alimentaires",
+    statVisionImpairmentValue: "2Md+",
+    statVisionImpairmentLabel: "Ayant une Déficience Visuelle",
+    inclusivityTitle: "Ne Laisser Personne de Côté",
+    inclusivityDescription: "Nous nous engageons pour l'accessibilité. C'est pourquoi nous concevons des systèmes de secours comme l'accès par SMS et ligne téléphonique pour garantir que chacun puisse en bénéficier, même sans smartphone.",
+    benefitsTitle: "Pourquoi NutriCode ?",
+    benefitFoodCompanies: "Pour les entreprises alimentaires : Réduire les coûts de changement d'étiquettes, diminuer le gaspillage et ouvrir un canal numérique direct avec les clients.",
+    benefitHealthApps: "Pour les applications de santé et wearables : Un flux de données riche et propre pour une intégration transparente.",
+    benefitConsumers: "Pour les consommateurs : Une information alimentaire accessible, personnelle et mondialement pertinente – pour la première fois.",
+    visionTitle: "L'Avenir de la Transparence Alimentaire",
+    visionDescription: "Ce n'est pas seulement une mise à niveau technologique – c'est le nouveau standard pour la transparence alimentaire.",
     // Common
     g: "g",
     kcal: "kcal",

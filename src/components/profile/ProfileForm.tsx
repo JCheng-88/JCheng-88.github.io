@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import {
   Form,
   FormControl,
@@ -28,10 +29,14 @@ const profileFormSchema = z.object({
     vegetarian: z.boolean().default(false),
     vegan: z.boolean().default(false),
   }),
-  allergies: z.string().transform(val => val.split(',').map(s => s.trim()).filter(Boolean)).default(""), // Store as comma-separated string in form, transform to array
+  allergies: z.string().transform(val => val.split(',').map(s => s.trim()).filter(Boolean)).default(""),
   preferences: z.object({
     lowSodium: z.boolean().default(false),
     highProtein: z.boolean().default(false),
+  }),
+  accessibility: z.object({
+    textToSpeech: z.boolean().default(false),
+    highContrastMode: z.boolean().default(false),
   }),
 });
 
@@ -45,8 +50,11 @@ export function ProfileForm() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-        ...defaultUserProfile,
-        allergies: defaultUserProfile.allergies.join(', '), // Convert array to string for form
+      ...defaultUserProfile,
+      allergies: defaultUserProfile.allergies.join(', '), // Convert array to string for form
+      accessibility: { // Ensure accessibility defaults are spread
+        ...defaultUserProfile.accessibility,
+      },
     },
   });
 
@@ -57,19 +65,38 @@ export function ProfileForm() {
         const parsedProfile: UserProfile = JSON.parse(storedProfile);
         form.reset({
             ...parsedProfile,
-            allergies: parsedProfile.allergies.join(', ') // Convert array to string for form
+            allergies: parsedProfile.allergies.join(', '),
+            accessibility: { // Ensure accessibility settings are loaded or defaulted
+              textToSpeech: parsedProfile.accessibility?.textToSpeech || false,
+              highContrastMode: parsedProfile.accessibility?.highContrastMode || false,
+            },
+        });
+      } else {
+        // If no stored profile, ensure default accessibility values are set from defaultUserProfile
+        form.reset({
+          ...defaultUserProfile,
+          allergies: defaultUserProfile.allergies.join(', '),
+          accessibility: {
+            ...defaultUserProfile.accessibility,
+          },
         });
       }
     } catch (error) {
       console.error("Failed to load profile from localStorage", error);
-      // Keep default values if parsing fails
+       // Fallback to default values if parsing fails or any error occurs
+       form.reset({
+        ...defaultUserProfile,
+        allergies: defaultUserProfile.allergies.join(', '),
+        accessibility: {
+          ...defaultUserProfile.accessibility,
+        },
+      });
     }
     setIsLoading(false);
   }, [form]);
 
   function onSubmit(data: ProfileFormValues) {
     try {
-      // The allergies field is already an array of strings due to the transform
       const profileToSave: UserProfile = {
         ...data,
         allergies: data.allergies // data.allergies is already string[] here
@@ -90,7 +117,7 @@ export function ProfileForm() {
   }
 
   if (isLoading) {
-    return <p>{translate("Loading profile...")}</p>; // Or a skeleton loader
+    return <p>{translate("Loading profile...")}</p>;
   }
 
   return (
@@ -166,6 +193,56 @@ export function ProfileForm() {
                 )}
               />
             ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="mb-4 text-lg font-medium">{translate('accessibilityFeatures')}</h3>
+          <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="accessibility.textToSpeech"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 shadow">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">
+                      {translate('enableTextToSpeech')}
+                    </FormLabel>
+                    <FormDescription>
+                      {translate('textToSpeechDescription')}
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="accessibility.highContrastMode"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 shadow">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">
+                      {translate('enableHighContrastMode')}
+                    </FormLabel>
+                    <FormDescription>
+                      {translate('highContrastModeDescription')}
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </div>
         </div>
         

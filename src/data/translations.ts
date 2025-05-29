@@ -12,7 +12,6 @@ export const translations: Record<Language, Record<string, string>> = {
   en: {
     // Header
     navHome: "Scan",
-    // navProfile: "Profile", // Removed as per user request
     navAbout: "About Us",
     language: "Language",
     // Home Page (Scan)
@@ -40,6 +39,11 @@ export const translations: Record<Language, Record<string, string>> = {
     dietaryRestrictions: "Dietary Restrictions",
     allergies: "Allergies (comma-separated)",
     preferences: "Preferences",
+    accessibilityFeatures: "Accessibility Features",
+    enableTextToSpeech: "Enable Text-to-Speech Mode",
+    enableHighContrastMode: "Enable High Contrast Mode",
+    textToSpeechDescription: "Reads product information aloud (feature in development).",
+    highContrastModeDescription: "Increases text contrast and simplifies layout for better readability (feature in development).",
     saveProfileButton: "Save Profile",
     profileSavedSuccess: "Profile saved successfully!",
     profileSaveError: "Error saving profile.",
@@ -95,7 +99,6 @@ export const translations: Record<Language, Record<string, string>> = {
   es: {
     // Header
     navHome: "Escanear",
-    // navProfile: "Perfil",
     navAbout: "Nosotros",
     language: "Idioma",
     // Home Page (Scan)
@@ -123,6 +126,11 @@ export const translations: Record<Language, Record<string, string>> = {
     dietaryRestrictions: "Restricciones Dietéticas",
     allergies: "Alergias (separadas por comas)",
     preferences: "Preferencias",
+    accessibilityFeatures: "Funciones de Accesibilidad",
+    enableTextToSpeech: "Activar Modo Texto a Voz",
+    enableHighContrastMode: "Activar Modo de Alto Contraste",
+    textToSpeechDescription: "Lee la información del producto en voz alta (función en desarrollo).",
+    highContrastModeDescription: "Aumenta el contraste del texto y simplifica el diseño para una mejor legibilidad (función en desarrollo).",
     saveProfileButton: "Guardar Perfil",
     profileSavedSuccess: "¡Perfil guardado con éxito!",
     profileSaveError: "Error al guardar el perfil.",
@@ -178,7 +186,6 @@ export const translations: Record<Language, Record<string, string>> = {
   fr: {
     // Header
     navHome: "Scanner",
-    // navProfile: "Profil",
     navAbout: "À Propos",
     language: "Langue",
     // Home Page (Scan)
@@ -206,6 +213,11 @@ export const translations: Record<Language, Record<string, string>> = {
     dietaryRestrictions: "Restrictions Alimentaires",
     allergies: "Allergies (séparées par des virgules)",
     preferences: "Préférences",
+    accessibilityFeatures: "Fonctionnalités d'Accessibilité",
+    enableTextToSpeech: "Activer le Mode Texte-Parole",
+    enableHighContrastMode: "Activer le Mode Contraste Élevé",
+    textToSpeechDescription: "Lit les informations du produit à haute voix (fonctionnalité en développement).",
+    highContrastModeDescription: "Augmente le contraste du texte et simplifie la mise en page pour une meilleure lisibilité (fonctionnalité en développement).",
     saveProfileButton: "Enregistrer le Profil",
     profileSavedSuccess: "Profil enregistré avec succès !",
     profileSaveError: "Erreur lors de l'enregistrement du profil.",

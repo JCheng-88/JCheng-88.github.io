@@ -107,4 +107,8 @@ export const defaultUserProfile: UserProfile = {
     lowSodium: false,
     highProtein: false,
   },
+  accessibility: {
+    textToSpeech: false,
+    highContrastMode: false,
+  }
 };

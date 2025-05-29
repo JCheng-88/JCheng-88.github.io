@@ -34,4 +34,8 @@ export interface UserProfile {
     lowSodium: boolean;
     highProtein: boolean;
   };
+  accessibility: {
+    textToSpeech: boolean;
+    highContrastMode: boolean;
+  };
 }

@@ -23,13 +23,15 @@ export function SiteHeader() {
   const activeClass = "text-foreground font-medium";
   const inactiveClass = "text-foreground/60";
 
+  // Initialize with inactive class to ensure server and initial client render match
   const [homeLinkEffectiveClass, setHomeLinkEffectiveClass] = useState(inactiveClass);
   const [aboutLinkEffectiveClass, setAboutLinkEffectiveClass] = useState(inactiveClass);
 
   useEffect(() => {
+    // This effect runs only on the client after hydration
     setHomeLinkEffectiveClass(pathname === "/" ? activeClass : inactiveClass);
     setAboutLinkEffectiveClass(pathname === "/about" ? activeClass : inactiveClass);
-  }, [pathname, activeClass, inactiveClass]); // Add dependencies
+  }, [pathname]); // Only pathname triggers this effect, active/inactive classes are stable
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

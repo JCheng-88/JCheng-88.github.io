@@ -192,13 +192,17 @@ export default function HomePage() {
         </CardHeader>
         <CardContent>
           {scanHistory.length > 0 ? (
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {scanHistory.map(product => (
-                <li key={product.id} className="flex items-center justify-between p-3 border rounded-md hover:bg-muted/50">
+                <li 
+                  key={product.id} 
+                  onClick={() => handleProductSelect(product.id)}
+                  className="p-3 border rounded-md hover:bg-muted/50 cursor-pointer transition-colors"
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleProductSelect(product.id); }}
+                >
                   <span className="font-medium">{product.name}</span>
-                  <Button variant="ghost" size="sm" onClick={() => handleProductSelect(product.id)}>
-                    {translate('viewProduct')}
-                  </Button>
                 </li>
               ))}
             </ul>

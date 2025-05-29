@@ -15,9 +15,9 @@ export const translations: Record<Language, Record<string, string>> = {
     navProfile: "Profile",
     language: "Language",
     // Home Page (Scan)
-    scanPrompt: "Select a product to see its details:",
-    scanButton: "Scan Product",
-    selectProductPlaceholder: "Select a product...",
+    scanPromptTitle: "Scan a Product", // Changed from scanPrompt
+    scanPromptMessage: "Product details will appear here once a QR code is scanned. You can also view items from your history below.", // New
+    noProductSelectedPrompt: "Scan a product or select an item from your history to view its details.", // New
     productNotFound: "Product not found.",
     nutritionalInformation: "Nutritional Information",
     ingredients: "Ingredients",
@@ -51,6 +51,7 @@ export const translations: Record<Language, Record<string, string>> = {
     noScanHistory: "You haven't viewed any products yet.",
     clearHistory: "Clear History",
     historyCleared: "Scan history cleared.",
+    historyClearedMessage: "Your recently viewed items have been cleared.", // New or updated for consistency
     viewProduct: "View",
     // App Promotion
     appPromotionTitle: "Get the Full NutriCode Experience!",
@@ -69,9 +70,9 @@ export const translations: Record<Language, Record<string, string>> = {
     navProfile: "Perfil",
     language: "Idioma",
     // Home Page (Scan)
-    scanPrompt: "Seleccione un producto para ver sus detalles:",
-    scanButton: "Escanear Producto",
-    selectProductPlaceholder: "Seleccione un producto...",
+    scanPromptTitle: "Escanear un Producto", // Changed
+    scanPromptMessage: "Los detalles del producto aparecerán aquí una vez que se escanee un código QR. También puedes ver artículos de tu historial a continuación.", // New
+    noProductSelectedPrompt: "Escanee un producto o seleccione un artículo de su historial para ver sus detalles.", // New
     productNotFound: "Producto no encontrado.",
     nutritionalInformation: "Información Nutricional",
     ingredients: "Ingredientes",
@@ -105,6 +106,7 @@ export const translations: Record<Language, Record<string, string>> = {
     noScanHistory: "Aún no has visto ningún producto.",
     clearHistory: "Borrar Historial",
     historyCleared: "Historial de escaneo borrado.",
+    historyClearedMessage: "Tus artículos vistos recientemente han sido borrados.", // New
     viewProduct: "Ver",
     // App Promotion
     appPromotionTitle: "¡Obtén la Experiencia Completa de NutriCode!",
@@ -123,9 +125,9 @@ export const translations: Record<Language, Record<string, string>> = {
     navProfile: "Profil",
     language: "Langue",
     // Home Page (Scan)
-    scanPrompt: "Sélectionnez un produit pour voir ses détails :",
-    scanButton: "Scanner le Produit",
-    selectProductPlaceholder: "Sélectionnez un produit...",
+    scanPromptTitle: "Scanner un Produit", // Changed
+    scanPromptMessage: "Les détails du produit apparaîtront ici une fois qu'un code QR est scanné. Vous pouvez également consulter les articles de votre historique ci-dessous.", // New
+    noProductSelectedPrompt: "Scannez un produit ou sélectionnez un article de votre historique pour afficher ses détails.", // New
     productNotFound: "Produit non trouvé.",
     nutritionalInformation: "Informations Nutritionnelles",
     ingredients: "Ingrédients",
@@ -159,6 +161,7 @@ export const translations: Record<Language, Record<string, string>> = {
     noScanHistory: "Vous n'avez encore consulté aucun produit.",
     clearHistory: "Effacer l'Historique",
     historyCleared: "Historique de scan effacé.",
+    historyClearedMessage: "Vos articles récemment consultés ont été effacés.", // New
     viewProduct: "Voir",
     // App Promotion
     appPromotionTitle: "Vivez l'Expérience NutriCode Complète !",

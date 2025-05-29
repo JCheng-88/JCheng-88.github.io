@@ -1,23 +1,17 @@
 // src/app/page.tsx
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ProductDisplay } from '@/components/product/ProductDisplay';
 import { mockProducts } from '@/data/mockData';
 import type { Product } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { History, ScanLine, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AppPromotionBanner } from '@/components/app/AppPromotionBanner';
 import { Separator } from '@/components/ui/separator';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const MAX_HISTORY_ITEMS = 5;
 const HISTORY_STORAGE_KEY = 'nutricode-scan-history-ids';
@@ -77,9 +71,10 @@ export default function HomePage() {
   const handleClearHistory = () => {
     localStorage.removeItem(HISTORY_STORAGE_KEY);
     setScanHistory([]);
+    setSelectedProductId(null); // Clear selected product when history is cleared
     toast({ 
       title: translate('historyCleared'),
-      description: "Your recently viewed items have been cleared.",
+      description: translate('historyClearedMessage'),
       variant: "default"
     });
   };
@@ -91,33 +86,32 @@ export default function HomePage() {
       <Card className="shadow-md">
         <CardHeader className="flex flex-row items-center space-x-2">
           <ScanLine className="h-6 w-6 text-primary" />
-          <CardTitle>{translate('scanPrompt')}</CardTitle>
+          <CardTitle>{translate('scanPromptTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <Select onValueChange={handleProductSelect} value={selectedProductId || ""}>
-            <SelectTrigger className="w-full md:w-1/2 lg:w-1/3">
-              <SelectValue placeholder={translate('selectProductPlaceholder')} />
-            </SelectTrigger>
-            <SelectContent>
-              {mockProducts.map((product) => (
-                <SelectItem key={product.id} value={product.id}>
-                  {product.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <p className="text-muted-foreground">
+            {translate('scanPromptMessage')}
+          </p>
         </CardContent>
       </Card>
 
       {selectedProduct ? (
         <ProductDisplay product={selectedProduct} />
-      ) : selectedProductId ? (
+      ) : selectedProductId ? ( 
          <Card className="shadow-md">
           <CardContent className="pt-6">
             <p className="text-center text-muted-foreground">{translate('productNotFound')}</p>
           </CardContent>
         </Card>
-      ) : null}
+      ) : (
+        <Card className="shadow-md">
+          <CardContent className="pt-6">
+            <p className="text-center text-lg text-muted-foreground">
+              {translate('noProductSelectedPrompt')}
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       <Separator />
 
@@ -155,7 +149,6 @@ export default function HomePage() {
           )}
         </CardContent>
       </Card>
-
     </div>
   );
 }

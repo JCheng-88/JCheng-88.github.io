@@ -109,8 +109,9 @@ export const defaultUserProfile: UserProfile = {
   },
   accessibility: {
     textToSpeech: false,
-    enlargedText: false, // Whether enlarged text is enabled
-    textSizeScale: 1, // Default to 100% (1.0 scale)
-    highContrastMode: false, // New separate high contrast mode
+    ttsSectionsToRead: ['name', 'description', 'allergens'], // Default sections to read
+    enlargedText: false,
+    textSizeScale: 1,
+    highContrastMode: false,
   }
 };

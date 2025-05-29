@@ -7,7 +7,7 @@ import type { Product, UserProfile } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { History, ScanLine, Trash2, AlertTriangle } from 'lucide-react';
+import { History, ScanLine, Trash2, AlertTriangle, Volume2Icon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AppPromotionBanner } from '@/components/app/AppPromotionBanner';
 import { Separator } from '@/components/ui/separator';
@@ -38,12 +38,11 @@ export default function HomePage() {
           .filter(p => p !== undefined) as Product[];
       } catch (e) {
         console.error("Error parsing scan history from localStorage", e);
-        localStorage.removeItem(HISTORY_STORAGE_KEY); // Clear corrupted data
+        localStorage.removeItem(HISTORY_STORAGE_KEY); 
       }
     }
 
     if (historicProducts.length === 0 && mockProducts.length > 0) {
-      // Pre-populate with the first few mock products if history is empty
       const defaultHistoryCount = Math.min(MAX_HISTORY_ITEMS, 3, mockProducts.length);
       const defaultProductIds = mockProducts.slice(0, defaultHistoryCount).map(p => p.id);
       historicProducts = defaultProductIds
@@ -60,8 +59,6 @@ export default function HomePage() {
         setUserProfile(JSON.parse(storedProfile));
       } catch (e) {
         console.error("Error parsing user profile from localStorage", e);
-        // Potentially clear corrupted profile data
-        // localStorage.removeItem(USER_PROFILE_STORAGE_KEY);
       }
     }
   }, []);
@@ -75,8 +72,6 @@ export default function HomePage() {
         const productAllergenLower = productAllergen.toLowerCase();
         if (userProfile.allergies.some(userAllergen => {
           const userAllergenLower = userAllergen.toLowerCase();
-          // Check if product allergen is listed in user's allergies or if user's allergy is a substring of product allergen
-          // e.g., user has "nuts", product has "tree nuts" OR user has "almond", product has "almonds"
           return productAllergenLower.includes(userAllergenLower) || userAllergenLower.includes(productAllergenLower);
         })) {
           warnings.push(productAllergen);
@@ -132,6 +127,24 @@ export default function HomePage() {
     });
   };
 
+  const handleReadAloud = () => {
+    if (!selectedProduct) {
+      toast({
+        title: translate('ttsInitiatedToastTitle'),
+        description: "No product selected to read.",
+        variant: "destructive"
+      });
+      return;
+    }
+    // In a real app, this would trigger speech synthesis
+    // based on userProfile.accessibility.ttsSectionsToRead and selectedProduct details.
+    toast({
+      title: translate('ttsInitiatedToastTitle'),
+      description: translate('ttsInitiatedToastDescription'),
+      variant: "default"
+    });
+  };
+
   return (
     <div className="space-y-8">
       <Card className="shadow-md">
@@ -154,6 +167,21 @@ export default function HomePage() {
             {translate('allergenAlertMessage', { allergens: activeAllergenWarnings.join(', ') })}
           </AlertDescription>
         </Alert>
+      )}
+
+      {userProfile?.accessibility?.textToSpeech && selectedProduct && (
+        <div className="my-4 flex justify-center">
+          <Button 
+            onClick={handleReadAloud} 
+            variant="outline" 
+            size="lg" 
+            aria-label={translate('readAloudButtonLabel')}
+            className="border-primary text-primary hover:bg-primary/10"
+          >
+            <Volume2Icon className="mr-2 h-6 w-6" />
+            {translate('readAloudButtonLabel')}
+          </Button>
+        </div>
       )}
 
       {selectedProduct ? (

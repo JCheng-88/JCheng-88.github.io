@@ -22,6 +22,7 @@ import type { UserProfile } from "@/types";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { defaultUserProfile } from "@/data/mockData";
+import { Separator } from "../ui/separator";
 
 const profileFormSchema = z.object({
   dietaryRestrictions: z.object({
@@ -37,6 +38,7 @@ const profileFormSchema = z.object({
   }),
   accessibility: z.object({
     textToSpeech: z.boolean().default(defaultUserProfile.accessibility.textToSpeech),
+    ttsSectionsToRead: z.array(z.string()).optional().default(defaultUserProfile.accessibility.ttsSectionsToRead || []),
     enlargedText: z.boolean().default(defaultUserProfile.accessibility.enlargedText),
     textSizeScale: z.number().min(0.8).max(2).step(0.1).default(defaultUserProfile.accessibility.textSizeScale),
     highContrastMode: z.boolean().default(defaultUserProfile.accessibility.highContrastMode),
@@ -45,6 +47,16 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
+const ttsAvailableSections = [
+  { id: 'name', labelKey: 'ttsSectionName' },
+  { id: 'description', labelKey: 'ttsSectionDescription' },
+  { id: 'nutritionalInfo', labelKey: 'ttsSectionNutritionalInfo' },
+  { id: 'ingredients', labelKey: 'ttsSectionIngredients' },
+  { id: 'allergens', labelKey: 'ttsSectionAllergens' },
+  { id: 'sustainability', labelKey: 'ttsSectionSustainability' },
+];
+
+
 export function ProfileForm() {
   const { toast } = useToast();
   const { translate } = useLanguage();
@@ -52,13 +64,11 @@ export function ProfileForm() {
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    // Default values are set by Zod schema's .default() where specified,
-    // otherwise, they will be undefined initially until localStorage is loaded or defaults below are applied.
-    // We will use form.reset in useEffect to populate from localStorage or full defaultUserProfile.
   });
   
   const enlargedTextEnabled = form.watch("accessibility.enlargedText");
   const currentTextSizeScale = form.watch("accessibility.textSizeScale") || defaultUserProfile.accessibility.textSizeScale;
+  const textToSpeechEnabled = form.watch("accessibility.textToSpeech");
 
 
   useEffect(() => {
@@ -66,7 +76,6 @@ export function ProfileForm() {
       const storedProfile = localStorage.getItem('nutricode-user-profile');
       if (storedProfile) {
         const parsedProfile: Partial<UserProfile> = JSON.parse(storedProfile);
-        // Construct the full profile ensuring all fields, especially nested ones, are present
         const newProfileData: ProfileFormValues = {
           dietaryRestrictions: {
             ...defaultUserProfile.dietaryRestrictions,
@@ -80,37 +89,38 @@ export function ProfileForm() {
           accessibility: {
             ...defaultUserProfile.accessibility,
             ...(parsedProfile.accessibility || {}),
+            ttsSectionsToRead: parsedProfile.accessibility?.ttsSectionsToRead || defaultUserProfile.accessibility.ttsSectionsToRead || [],
           },
         };
         form.reset(newProfileData);
       } else {
-         // If no stored profile, reset with full default values
         form.reset({
           dietaryRestrictions: { ...defaultUserProfile.dietaryRestrictions },
           allergies: defaultUserProfile.allergies.join(', '),
           preferences: { ...defaultUserProfile.preferences },
-          accessibility: { ...defaultUserProfile.accessibility },
+          accessibility: { ...defaultUserProfile.accessibility, ttsSectionsToRead: defaultUserProfile.accessibility.ttsSectionsToRead || [] },
         });
       }
     } catch (error) {
       console.error("Failed to load profile from localStorage", error);
-       // Fallback to default values if parsing fails or any error occurs
        form.reset({
         dietaryRestrictions: { ...defaultUserProfile.dietaryRestrictions },
         allergies: defaultUserProfile.allergies.join(', '),
         preferences: { ...defaultUserProfile.preferences },
-        accessibility: { ...defaultUserProfile.accessibility },
+        accessibility: { ...defaultUserProfile.accessibility, ttsSectionsToRead: defaultUserProfile.accessibility.ttsSectionsToRead || [] },
       });
     }
     setIsLoading(false);
-  }, [form]); // form is a dependency of useEffect
+  }, [form]);
 
   function onSubmit(data: ProfileFormValues) {
     try {
       const profileToSave: UserProfile = {
         ...data,
-        // allergies string is already transformed to string[] by Zod schema
-        // and data object here already reflects that transformation.
+        accessibility: {
+          ...data.accessibility,
+          ttsSectionsToRead: data.accessibility.textToSpeech ? data.accessibility.ttsSectionsToRead : [], // Clear sections if TTS is off
+        }
       };
       localStorage.setItem('nutricode-user-profile', JSON.stringify(profileToSave));
       toast({
@@ -232,6 +242,60 @@ export function ProfileForm() {
                 </FormItem>
               )}
             />
+
+            {textToSpeechEnabled && (
+              <FormField
+                control={form.control}
+                name="accessibility.ttsSectionsToRead"
+                render={({ field }) => (
+                  <FormItem className="rounded-lg border p-4 shadow space-y-3">
+                    <FormLabel className="text-base font-medium">
+                      {translate('selectTTSSectionsPrompt')}
+                    </FormLabel>
+                    <div className="space-y-2">
+                      {ttsAvailableSections.map((section) => (
+                        <FormField
+                          key={section.id}
+                          control={form.control}
+                          name="accessibility.ttsSectionsToRead"
+                          render={({ field: ttsField }) => {
+                            // Ensure field.value is an array
+                            const currentSelections = Array.isArray(ttsField.value) ? ttsField.value : [];
+                            return (
+                              <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <Checkbox
+                                    checked={currentSelections.includes(section.id)}
+                                    onCheckedChange={(checked) => {
+                                      let newSelections = [...currentSelections];
+                                      if (checked) {
+                                        if (!newSelections.includes(section.id)) {
+                                          newSelections.push(section.id);
+                                        }
+                                      } else {
+                                        newSelections = newSelections.filter(id => id !== section.id);
+                                      }
+                                      ttsField.onChange(newSelections);
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  {translate(section.labelKey)}
+                                </FormLabel>
+                              </FormItem>
+                            );
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            
+            <Separator />
+
             <FormField
               control={form.control}
               name="accessibility.enlargedText"
@@ -267,8 +331,8 @@ export function ProfileForm() {
                     </div>
                     <FormControl>
                       <Slider
-                        value={[field.value]} // Slider expects an array
-                        onValueChange={(value) => field.onChange(value[0])} // Update form with the first element
+                        value={[field.value]} 
+                        onValueChange={(value) => field.onChange(value[0])} 
                         min={0.8}
                         max={2}
                         step={0.1}
@@ -283,6 +347,8 @@ export function ProfileForm() {
                 )}
               />
             )}
+
+            <Separator />
 
             <FormField
               control={form.control}

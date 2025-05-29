@@ -8,6 +8,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Form,
   FormControl,
   FormDescription,
@@ -21,7 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { UserProfile } from "@/types";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { defaultUserProfile } from "@/data/mockData";
+import { defaultUserProfile, ttsAvailableVoices } from "@/data/mockData";
 import { Separator } from "../ui/separator";
 
 const profileFormSchema = z.object({
@@ -39,6 +46,7 @@ const profileFormSchema = z.object({
   accessibility: z.object({
     textToSpeech: z.boolean().default(defaultUserProfile.accessibility.textToSpeech),
     ttsSectionsToRead: z.array(z.string()).optional().default(defaultUserProfile.accessibility.ttsSectionsToRead || []),
+    ttsVoice: z.string().optional().default(defaultUserProfile.accessibility.ttsVoice),
     enlargedText: z.boolean().default(defaultUserProfile.accessibility.enlargedText),
     textSizeScale: z.number().min(0.8).max(2).step(0.1).default(defaultUserProfile.accessibility.textSizeScale),
     highContrastMode: z.boolean().default(defaultUserProfile.accessibility.highContrastMode),
@@ -90,6 +98,7 @@ export function ProfileForm() {
             ...defaultUserProfile.accessibility,
             ...(parsedProfile.accessibility || {}),
             ttsSectionsToRead: parsedProfile.accessibility?.ttsSectionsToRead || defaultUserProfile.accessibility.ttsSectionsToRead || [],
+            ttsVoice: parsedProfile.accessibility?.ttsVoice || defaultUserProfile.accessibility.ttsVoice,
           },
         };
         form.reset(newProfileData);
@@ -98,7 +107,11 @@ export function ProfileForm() {
           dietaryRestrictions: { ...defaultUserProfile.dietaryRestrictions },
           allergies: defaultUserProfile.allergies.join(', '),
           preferences: { ...defaultUserProfile.preferences },
-          accessibility: { ...defaultUserProfile.accessibility, ttsSectionsToRead: defaultUserProfile.accessibility.ttsSectionsToRead || [] },
+          accessibility: { 
+            ...defaultUserProfile.accessibility, 
+            ttsSectionsToRead: defaultUserProfile.accessibility.ttsSectionsToRead || [],
+            ttsVoice: defaultUserProfile.accessibility.ttsVoice,
+          },
         });
       }
     } catch (error) {
@@ -107,7 +120,11 @@ export function ProfileForm() {
         dietaryRestrictions: { ...defaultUserProfile.dietaryRestrictions },
         allergies: defaultUserProfile.allergies.join(', '),
         preferences: { ...defaultUserProfile.preferences },
-        accessibility: { ...defaultUserProfile.accessibility, ttsSectionsToRead: defaultUserProfile.accessibility.ttsSectionsToRead || [] },
+        accessibility: { 
+            ...defaultUserProfile.accessibility, 
+            ttsSectionsToRead: defaultUserProfile.accessibility.ttsSectionsToRead || [],
+            ttsVoice: defaultUserProfile.accessibility.ttsVoice,
+        },
       });
     }
     setIsLoading(false);
@@ -119,7 +136,8 @@ export function ProfileForm() {
         ...data,
         accessibility: {
           ...data.accessibility,
-          ttsSectionsToRead: data.accessibility.textToSpeech ? data.accessibility.ttsSectionsToRead : [], // Clear sections if TTS is off
+          ttsSectionsToRead: data.accessibility.textToSpeech ? data.accessibility.ttsSectionsToRead : [],
+          ttsVoice: data.accessibility.textToSpeech ? data.accessibility.ttsVoice : defaultUserProfile.accessibility.ttsVoice,
         }
       };
       localStorage.setItem('nutricode-user-profile', JSON.stringify(profileToSave));
@@ -244,54 +262,79 @@ export function ProfileForm() {
             />
 
             {textToSpeechEnabled && (
-              <FormField
-                control={form.control}
-                name="accessibility.ttsSectionsToRead"
-                render={({ field }) => (
-                  <FormItem className="rounded-lg border p-4 shadow space-y-3">
-                    <FormLabel className="text-base font-medium">
-                      {translate('selectTTSSectionsPrompt')}
-                    </FormLabel>
-                    <div className="space-y-2">
-                      {ttsAvailableSections.map((section) => (
-                        <FormField
-                          key={section.id}
-                          control={form.control}
-                          name="accessibility.ttsSectionsToRead"
-                          render={({ field: ttsField }) => {
-                            // Ensure field.value is an array
-                            const currentSelections = Array.isArray(ttsField.value) ? ttsField.value : [];
-                            return (
-                              <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <Checkbox
-                                    checked={currentSelections.includes(section.id)}
-                                    onCheckedChange={(checked) => {
-                                      let newSelections = [...currentSelections];
-                                      if (checked) {
-                                        if (!newSelections.includes(section.id)) {
-                                          newSelections.push(section.id);
+              <>
+                <FormField
+                  control={form.control}
+                  name="accessibility.ttsSectionsToRead"
+                  render={({ field }) => (
+                    <FormItem className="rounded-lg border p-4 shadow space-y-3">
+                      <FormLabel className="text-base font-medium">
+                        {translate('selectTTSSectionsPrompt')}
+                      </FormLabel>
+                      <div className="space-y-2">
+                        {ttsAvailableSections.map((section) => (
+                          <FormField
+                            key={section.id}
+                            control={form.control}
+                            name="accessibility.ttsSectionsToRead"
+                            render={({ field: ttsField }) => {
+                              const currentSelections = Array.isArray(ttsField.value) ? ttsField.value : [];
+                              return (
+                                <FormItem className="flex flex-row items-center space-x-3 space-y-0">
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={currentSelections.includes(section.id)}
+                                      onCheckedChange={(checked) => {
+                                        let newSelections = [...currentSelections];
+                                        if (checked) {
+                                          if (!newSelections.includes(section.id)) {
+                                            newSelections.push(section.id);
+                                          }
+                                        } else {
+                                          newSelections = newSelections.filter(id => id !== section.id);
                                         }
-                                      } else {
-                                        newSelections = newSelections.filter(id => id !== section.id);
-                                      }
-                                      ttsField.onChange(newSelections);
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  {translate(section.labelKey)}
-                                </FormLabel>
-                              </FormItem>
-                            );
-                          }}
-                        />
-                      ))}
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                                        ttsField.onChange(newSelections);
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {translate(section.labelKey)}
+                                  </FormLabel>
+                                </FormItem>
+                              );
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="accessibility.ttsVoice"
+                  render={({ field }) => (
+                    <FormItem className="rounded-lg border p-4 shadow space-y-3">
+                      <FormLabel className="text-base font-medium">{translate('selectTTSVoicePrompt')}</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={translate('selectTTSVoicePrompt')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {ttsAvailableVoices.map((voice) => (
+                            <SelectItem key={voice.value} value={voice.value}>
+                              {translate(voice.labelKey)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
             
             <Separator />

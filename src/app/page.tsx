@@ -137,10 +137,12 @@ export default function HomePage() {
       return;
     }
     // In a real app, this would trigger speech synthesis
-    // based on userProfile.accessibility.ttsSectionsToRead and selectedProduct details.
+    // based on userProfile.accessibility.ttsSectionsToRead, userProfile.accessibility.ttsVoice and selectedProduct details.
+    const sections = userProfile?.accessibility?.ttsSectionsToRead?.join(', ') || 'all selected';
+    const voice = userProfile?.accessibility?.ttsVoice || 'default';
     toast({
       title: translate('ttsInitiatedToastTitle'),
-      description: translate('ttsInitiatedToastDescription'),
+      description: translate('ttsInitiatedToastDescription', { sections: sections, voice: voice }),
       variant: "default"
     });
   };
@@ -173,10 +175,10 @@ export default function HomePage() {
         <div className="my-4 flex justify-center">
           <Button 
             onClick={handleReadAloud} 
-            variant="outline" 
+            variant="default" // Changed to default for primary color styling
             size="lg" 
             aria-label={translate('readAloudButtonLabel')}
-            className="border-primary text-primary hover:bg-primary/10"
+            className="font-semibold shadow-md" // Added font-semibold and shadow for emphasis
           >
             <Volume2Icon className="mr-2 h-6 w-6" />
             {translate('readAloudButtonLabel')}

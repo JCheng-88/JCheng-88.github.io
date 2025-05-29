@@ -95,6 +95,15 @@ export const mockProducts: Product[] = [
   }
 ];
 
+export const ttsAvailableVoices: { value: string; labelKey: string }[] = [
+  { value: 'default-male-us', labelKey: 'ttsVoiceMaleUS' },
+  { value: 'default-female-us', labelKey: 'ttsVoiceFemaleUS' },
+  { value: 'default-male-uk', labelKey: 'ttsVoiceMaleUK' },
+  { value: 'default-female-uk', labelKey: 'ttsVoiceFemaleUK' },
+  { value: 'default-male-au', labelKey: 'ttsVoiceMaleAU' },
+  { value: 'default-female-au', labelKey: 'ttsVoiceFemaleAU' },
+];
+
 export const defaultUserProfile: UserProfile = {
   dietaryRestrictions: {
     glutenFree: false,
@@ -109,7 +118,8 @@ export const defaultUserProfile: UserProfile = {
   },
   accessibility: {
     textToSpeech: false,
-    ttsSectionsToRead: ['name', 'description', 'allergens'], // Default sections to read
+    ttsSectionsToRead: ['name', 'description', 'allergens'],
+    ttsVoice: 'default-male-us', // Default voice
     enlargedText: false,
     textSizeScale: 1,
     highContrastMode: false,

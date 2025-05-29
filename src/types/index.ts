@@ -36,7 +36,8 @@ export interface UserProfile {
   };
   accessibility: {
     textToSpeech: boolean;
-    ttsSectionsToRead?: string[]; // Added: sections for TTS
+    ttsSectionsToRead?: string[];
+    ttsVoice?: string; // Added: TTS voice preference
     enlargedText: boolean;
     textSizeScale: number;
     highContrastMode: boolean;

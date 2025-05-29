@@ -3,11 +3,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { ProductDisplay } from '@/components/product/ProductDisplay';
 import { mockProducts } from '@/data/mockData';
-import type { Product } from '@/types';
+import type { Product, UserProfile } from '@/types';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { History, ScanLine, Trash2 } from 'lucide-react';
+import { History, ScanLine, Trash2, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AppPromotionBanner } from '@/components/app/AppPromotionBanner';
 import { Separator } from '@/components/ui/separator';
@@ -15,14 +15,18 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const MAX_HISTORY_ITEMS = 5;
 const HISTORY_STORAGE_KEY = 'nutricode-scan-history-ids';
+const USER_PROFILE_STORAGE_KEY = 'nutricode-user-profile';
 
 export default function HomePage() {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [scanHistory, setScanHistory] = useState<Product[]>([]);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [activeAllergenWarnings, setActiveAllergenWarnings] = useState<string[]>([]);
   const { translate } = useLanguage();
   const { toast } = useToast();
 
   useEffect(() => {
+    // Load scan history
     const storedHistoryIdsJSON = localStorage.getItem(HISTORY_STORAGE_KEY);
     if (storedHistoryIdsJSON) {
       try {
@@ -33,10 +37,42 @@ export default function HomePage() {
         setScanHistory(historicProducts);
       } catch (e) {
         console.error("Error parsing scan history from localStorage", e);
-        localStorage.removeItem(HISTORY_STORAGE_KEY); // Clear corrupted data
+        localStorage.removeItem(HISTORY_STORAGE_KEY);
+      }
+    }
+
+    // Load user profile
+    const storedProfile = localStorage.getItem(USER_PROFILE_STORAGE_KEY);
+    if (storedProfile) {
+      try {
+        setUserProfile(JSON.parse(storedProfile));
+      } catch (e) {
+        console.error("Error parsing user profile from localStorage", e);
+        // Potentially clear corrupted profile data
+        // localStorage.removeItem(USER_PROFILE_STORAGE_KEY);
       }
     }
   }, []);
+
+  const selectedProduct = mockProducts.find(p => p.id === selectedProductId);
+
+  useEffect(() => {
+    if (selectedProduct && userProfile && userProfile.allergies.length > 0) {
+      const warnings: string[] = [];
+      selectedProduct.allergens.forEach(productAllergen => {
+        const productAllergenLower = productAllergen.toLowerCase();
+        if (userProfile.allergies.some(userAllergen => {
+          const userAllergenLower = userAllergen.toLowerCase();
+          return productAllergenLower.includes(userAllergenLower) || userAllergenLower.includes(productAllergenLower);
+        })) {
+          warnings.push(productAllergen);
+        }
+      });
+      setActiveAllergenWarnings(warnings);
+    } else {
+      setActiveAllergenWarnings([]);
+    }
+  }, [selectedProduct, userProfile]);
 
   const handleProductSelect = (productId: string | null) => {
     setSelectedProductId(productId);
@@ -50,7 +86,6 @@ export default function HomePage() {
             historyIds = JSON.parse(storedHistoryIdsJSON);
           } catch (e) {
              console.error("Error parsing scan history for update", e);
-             // historyIds remains empty, effectively resetting if corrupted
           }
         }
         
@@ -71,15 +106,14 @@ export default function HomePage() {
   const handleClearHistory = () => {
     localStorage.removeItem(HISTORY_STORAGE_KEY);
     setScanHistory([]);
-    setSelectedProductId(null); // Clear selected product when history is cleared
+    setSelectedProductId(null);
+    setActiveAllergenWarnings([]);
     toast({ 
       title: translate('historyCleared'),
       description: translate('historyClearedMessage'),
       variant: "default"
     });
   };
-
-  const selectedProduct = mockProducts.find(p => p.id === selectedProductId);
 
   return (
     <div className="space-y-8">
@@ -94,6 +128,16 @@ export default function HomePage() {
           </p>
         </CardContent>
       </Card>
+
+      {activeAllergenWarnings.length > 0 && (
+        <Alert variant="destructive" className="shadow-lg">
+          <AlertTriangle className="h-5 w-5" />
+          <AlertTitle>{translate('allergenAlertTitle')}</AlertTitle>
+          <AlertDescription>
+            {translate('allergenAlertMessage', { allergens: activeAllergenWarnings.join(', ') })}
+          </AlertDescription>
+        </Alert>
+      )}
 
       {selectedProduct ? (
         <ProductDisplay product={selectedProduct} />

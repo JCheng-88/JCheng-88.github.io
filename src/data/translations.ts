@@ -12,8 +12,8 @@ export const translations: Record<Language, Record<string, string>> = {
   en: {
     // Header
     navHome: "Scan",
-    navProfile: "Profile",
-    navAbout: "About Us", // New
+    // navProfile: "Profile", // Removed as per user request
+    navAbout: "About Us",
     language: "Language",
     // Home Page (Scan)
     scanPromptTitle: "Scan a Product", 
@@ -33,6 +33,8 @@ export const translations: Record<Language, Record<string, string>> = {
     fat: "Fat",
     carbs: "Carbohydrates",
     servingSize: "Serving Size",
+    allergenAlertTitle: "Allergen Alert!",
+    allergenAlertMessage: "Warning: This product contains {allergens}. Please review carefully if you have sensitivities.",
     // Profile Page
     profileTitle: "Personalized Nutrition Profile",
     dietaryRestrictions: "Dietary Restrictions",
@@ -93,8 +95,8 @@ export const translations: Record<Language, Record<string, string>> = {
   es: {
     // Header
     navHome: "Escanear",
-    navProfile: "Perfil",
-    navAbout: "Nosotros", // New
+    // navProfile: "Perfil",
+    navAbout: "Nosotros",
     language: "Idioma",
     // Home Page (Scan)
     scanPromptTitle: "Escanear un Producto", 
@@ -114,6 +116,8 @@ export const translations: Record<Language, Record<string, string>> = {
     fat: "Grasa",
     carbs: "Carbohidratos",
     servingSize: "Tamaño de la Porción",
+    allergenAlertTitle: "¡Alerta de Alérgenos!",
+    allergenAlertMessage: "Advertencia: Este producto contiene {allergens}. Por favor, revíselo cuidadosamente si tiene sensibilidades.",
     // Profile Page
     profileTitle: "Perfil Nutricional Personalizado",
     dietaryRestrictions: "Restricciones Dietéticas",
@@ -151,7 +155,7 @@ export const translations: Record<Language, Record<string, string>> = {
     impactIntro: "Esto no es solo una función de conveniencia. Estamos resolviendo problemas reales de acceso para cientos de millones de personas:",
     statMigrantsValue: "280M+",
     statMigrantsLabel: "Migrantes y Expatriados en el Mundo",
-    statTouristsValue: "1.5MM", // MM for "mil millones"
+    statTouristsValue: "1.5MM",
     statTouristsLabel: "Turistas Anualmente",
     statAllergiesValue: "Millones",
     statAllergiesLabel: "Con Alergias Alimentarias",
@@ -174,8 +178,8 @@ export const translations: Record<Language, Record<string, string>> = {
   fr: {
     // Header
     navHome: "Scanner",
-    navProfile: "Profil",
-    navAbout: "À Propos", // New
+    // navProfile: "Profil",
+    navAbout: "À Propos",
     language: "Langue",
     // Home Page (Scan)
     scanPromptTitle: "Scanner un Produit", 
@@ -195,6 +199,8 @@ export const translations: Record<Language, Record<string, string>> = {
     fat: "Matières Grasses",
     carbs: "Glucides",
     servingSize: "Taille de la Portion",
+    allergenAlertTitle: "Alerte Allergène !",
+    allergenAlertMessage: "Attention : Ce produit contient des {allergens}. Veuillez examiner attentivement si vous avez des sensibilités.",
     // Profile Page
     profileTitle: "Profil Nutritionnel Personnalisé",
     dietaryRestrictions: "Restrictions Alimentaires",
@@ -232,7 +238,7 @@ export const translations: Record<Language, Record<string, string>> = {
     impactIntro: "Ce n'est pas juste une fonctionnalité pratique. Nous résolvons de vrais problèmes d'accès pour des centaines de millions de personnes :",
     statMigrantsValue: "280M+",
     statMigrantsLabel: "Migrants et Expatriés dans le Monde",
-    statTouristsValue: "1.5Md", // Md for Milliards
+    statTouristsValue: "1.5Md",
     statTouristsLabel: "Touristes Chaque Année",
     statAllergiesValue: "Millions",
     statAllergiesLabel: "Souffrant d'Allergies Alimentaires",

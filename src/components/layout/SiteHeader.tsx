@@ -37,15 +37,6 @@ export function SiteHeader() {
             {translate('navHome')}
           </Link>
           <Link
-            href="/profile"
-            className={cn(
-              "transition-colors hover:text-foreground/80",
-              pathname === "/profile" ? "text-foreground font-medium" : "text-foreground/60"
-            )}
-          >
-            {translate('navProfile')}
-          </Link>
-          <Link
             href="/about"
             className={cn(
               "transition-colors hover:text-foreground/80",

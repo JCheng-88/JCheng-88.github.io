@@ -90,6 +90,9 @@ export default function HomePage() {
 
   const handleProductSelect = (productId: string | null) => {
     setSelectedProductId(productId);
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
     if (productId) {
       const currentProduct = mockProducts.find(p => p.id === productId);
       if (currentProduct) {

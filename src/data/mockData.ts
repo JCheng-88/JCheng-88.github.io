@@ -68,7 +68,7 @@ export const mockProducts: Product[] = [
     },
     images: ["https://placehold.co/600x400.png"],
     description: "Smooth and creamy unsweetened almond milk. A great dairy-free alternative for cereals, coffee, or by itself.",
-    dataAiHint: "almond milk"
+    dataAiHint: "Alpro almond"
   },
   {
     id: "4",

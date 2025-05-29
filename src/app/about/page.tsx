@@ -1,9 +1,10 @@
+
 // src/app/about/page.tsx
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { BarChart3, Globe, PackageOpen, Users, Vision, MessageCircle } from 'lucide-react';
+import { BarChart3, Globe, PackageOpen, Users, Eye, MessageCircle } from 'lucide-react';
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -77,7 +78,7 @@ export default function AboutPage() {
                 label={translate('statAllergiesLabel')} 
               />
               <StatCard 
-                icon={<Vision className="h-8 w-8" />} 
+                icon={<Eye className="h-8 w-8" />} 
                 value={translate('statVisionImpairmentValue')} 
                 label={translate('statVisionImpairmentLabel')} 
               />

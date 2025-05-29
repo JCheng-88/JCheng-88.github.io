@@ -1,0 +1,141 @@
+export type Language = 'en' | 'es' | 'fr';
+
+export const appName = "NutriCode";
+
+export const availableLanguages: { code: Language; name: string }[] = [
+  { code: 'en', name: 'English' },
+  { code: 'es', name: 'Español' },
+  { code: 'fr', name: 'Français' },
+];
+
+export const translations: Record<Language, Record<string, string>> = {
+  en: {
+    // Header
+    navHome: "Scan",
+    navProfile: "Profile",
+    language: "Language",
+    // Home Page (Scan)
+    scanPrompt: "Select a product to see its details:",
+    scanButton: "Scan Product",
+    selectProductPlaceholder: "Select a product...",
+    productNotFound: "Product not found.",
+    nutritionalInformation: "Nutritional Information",
+    ingredients: "Ingredients",
+    allergenWarnings: "Allergen Warnings",
+    sustainabilityTracking: "Sustainability Tracking",
+    environmentalScore: "Environmental Score",
+    co2Footprint: "CO₂ Footprint",
+    sourcingInfo: "Sourcing Information",
+    impactStatement: "Impact Statement",
+    calories: "Calories",
+    protein: "Protein",
+    fat: "Fat",
+    carbs: "Carbohydrates",
+    servingSize: "Serving Size",
+    // Profile Page
+    profileTitle: "Personalized Nutrition Profile",
+    dietaryRestrictions: "Dietary Restrictions",
+    allergies: "Allergies (comma-separated)",
+    preferences: "Preferences",
+    saveProfileButton: "Save Profile",
+    profileSavedSuccess: "Profile saved successfully!",
+    profileSaveError: "Error saving profile.",
+    glutenFree: "Gluten-Free",
+    dairyFree: "Dairy-Free",
+    vegetarian: "Vegetarian",
+    vegan: "Vegan",
+    lowSodium: "Low Sodium",
+    highProtein: "High Protein",
+    // Common
+    g: "g", 
+    kcal: "kcal",
+    learnMore: "Learn More",
+    noInformationAvailable: "No information available."
+  },
+  es: {
+    // Header
+    navHome: "Escanear",
+    navProfile: "Perfil",
+    language: "Idioma",
+    // Home Page (Scan)
+    scanPrompt: "Seleccione un producto para ver sus detalles:",
+    scanButton: "Escanear Producto",
+    selectProductPlaceholder: "Seleccione un producto...",
+    productNotFound: "Producto no encontrado.",
+    nutritionalInformation: "Información Nutricional",
+    ingredients: "Ingredientes",
+    allergenWarnings: "Advertencias de Alérgenos",
+    sustainabilityTracking: "Seguimiento de Sostenibilidad",
+    environmentalScore: "Puntuación Ambiental",
+    co2Footprint: "Huella de CO₂",
+    sourcingInfo: "Información de Origen",
+    impactStatement: "Declaración de Impacto",
+    calories: "Calorías",
+    protein: "Proteína",
+    fat: "Grasa",
+    carbs: "Carbohidratos",
+    servingSize: "Tamaño de la Porción",
+    // Profile Page
+    profileTitle: "Perfil Nutricional Personalizado",
+    dietaryRestrictions: "Restricciones Dietéticas",
+    allergies: "Alergias (separadas por comas)",
+    preferences: "Preferencias",
+    saveProfileButton: "Guardar Perfil",
+    profileSavedSuccess: "¡Perfil guardado con éxito!",
+    profileSaveError: "Error al guardar el perfil.",
+    glutenFree: "Sin Gluten",
+    dairyFree: "Sin Lácteos",
+    vegetarian: "Vegetariano",
+    vegan: "Vegano",
+    lowSodium: "Bajo en Sodio",
+    highProtein: "Alto en Proteínas",
+    // Common
+    g: "g",
+    kcal: "kcal",
+    learnMore: "Aprende Más",
+    noInformationAvailable: "No hay información disponible."
+  },
+  fr: {
+    // Header
+    navHome: "Scanner",
+    navProfile: "Profil",
+    language: "Langue",
+    // Home Page (Scan)
+    scanPrompt: "Sélectionnez un produit pour voir ses détails :",
+    scanButton: "Scanner le Produit",
+    selectProductPlaceholder: "Sélectionnez un produit...",
+    productNotFound: "Produit non trouvé.",
+    nutritionalInformation: "Informations Nutritionnelles",
+    ingredients: "Ingrédients",
+    allergenWarnings: "Avertissements Allergènes",
+    sustainabilityTracking: "Suivi de la Durabilité",
+    environmentalScore: "Score Environnemental",
+    co2Footprint: "Empreinte CO₂",
+    sourcingInfo: "Informations sur l'Approvisionnement",
+    impactStatement: "Déclaration d'Impact",
+    calories: "Calories",
+    protein: "Protéines",
+    fat: "Matières Grasses",
+    carbs: "Glucides",
+    servingSize: "Taille de la Portion",
+    // Profile Page
+    profileTitle: "Profil Nutritionnel Personnalisé",
+    dietaryRestrictions: "Restrictions Alimentaires",
+    allergies: "Allergies (séparées par des virgules)",
+    preferences: "Préférences",
+    saveProfileButton: "Enregistrer le Profil",
+    profileSavedSuccess: "Profil enregistré avec succès !",
+    profileSaveError: "Erreur lors de l'enregistrement du profil.",
+    glutenFree: "Sans Gluten",
+    dairyFree: "Sans Produits Laitiers",
+    vegetarian: "Végétarien",
+    vegan: "Végétalien",
+    lowSodium: "Faible en Sodium",
+    highProtein: "Riche en Protéines",
+    // Common
+    g: "g",
+    kcal: "kcal",
+    learnMore: "En Savoir Plus",
+    noInformationAvailable: "Aucune information disponible."
+  },
+};
